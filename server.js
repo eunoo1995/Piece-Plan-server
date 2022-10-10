@@ -4,16 +4,9 @@ const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 8090;
 
 // cors 해결을 위한 미들웨어 사용
-// const ALLOW_LIST = ["http://localhost:5500"];
+const ALLOW_LIST = ["http://localhost:5500", "https://piece-plan-server.herokuapp.com"];
 
-// const corsOptions = {
-//   origin(origin, callback) {
-//     if (ALLOW_LIST.includes(origin)) callback(null, true);
-//     else callback(new Error("Not Allowed Origin!"));
-//   },
-// };
-
-app.use(cors());
+app.use(cors({ origin: ALLOW_LIST }));
 app.use(express.json());
 
 let todos = [{ a: 1 }, { b: 2 }, { c: 3 }, { d: 4 }];
