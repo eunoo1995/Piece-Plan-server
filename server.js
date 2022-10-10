@@ -7,9 +7,16 @@ const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 8090;
 
 // session 설정
+const client = redis.createClient({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,
+  logErrors: true,
+});
+
 app.use(
   session({
-    store: new RedisStore({}),
+    store: new RedisStore({ client }),
     secret: "SADG1348FSDAf3fSadf31as",
     resave: false,
     saveUninitialized: true,
@@ -32,8 +39,8 @@ let { todos } = require("./mock.js");
 app.get("/", (req, res) => {
   const session = req.session;
 
-  if (session.user) res.send("로그인 안했음");
-  else res.send("로그인 했음");
+  if (session.user) res.send("로그인 했음");
+  else res.send("로그인 안했음");
 });
 
 // 세션 테스트
