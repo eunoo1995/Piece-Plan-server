@@ -1,7 +1,20 @@
 const express = require("express");
 const cors = require("cors");
+const session = require("express-session");
+const RedisStore = require("connect-redis")(session);
+
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 8090;
+
+// session 설정
+app.use(
+  session({
+    store: new RedisStore({}),
+    secret: "SADG1348FSDAf3fSadf31as",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // cors 해결을 위한 미들웨어 사용
 const ALLOW_LIST = ["http://localhost:5500", "https://piece-plan-server.herokuapp.com"];
@@ -17,7 +30,27 @@ let { todos } = require("./mock.js");
 // req는 클라이언트의 요청을 담고있고, res는 응답을 보낼 때 사용
 
 app.get("/", (req, res) => {
-  res.send("asdfas");
+  const session = req.session;
+
+  if (session.user) res.send("로그인 안했음");
+  else res.send("로그인 했음");
+});
+
+// 세션 테스트
+
+app.get("/login", (req, res) => {
+  const session = req.session;
+  if (session && session.user) {
+    res.send("이미 로그인중");
+  } else {
+    session.user = "홍길동";
+    res.send("홍길동님 환영합니다.");
+  }
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.send("Session Destroyed!");
 });
 
 app.get("/todos", (req, res) => {
