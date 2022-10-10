@@ -3,10 +3,20 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 8090;
 
-app.use(cors());
+// cors 해결을 위한 미들웨어 사용
+const ALLOW_LIST = ["http://localhost:5500"];
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (ALLOW_LIST.includes(origin)) callback(null, true);
+    else callback(new Error("Not Allowed Origin!"));
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
-let todos = { a: 1, b: 2 };
+let todos = [{ a: 1 }, { b: 2 }];
 
 // REST API
 // callback에 인수로 req와 res가 온다.
@@ -17,6 +27,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/todos", (req, res) => {
+  res.send(todos);
+});
+
+app.post("/todos", (req, res) => {
+  const newTodo = req.body;
+  todos = [newTodo, ...todos];
+
   res.send(todos);
 });
 
