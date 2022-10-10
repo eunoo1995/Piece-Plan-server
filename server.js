@@ -9,7 +9,8 @@ const ALLOW_LIST = ["http://localhost:5500", "https://piece-plan-server.herokuap
 app.use(cors({ origin: ALLOW_LIST }));
 app.use(express.json());
 
-let todos = [{ a: 1 }, { b: 2 }, { c: 3 }, { d: 4 }];
+// mock 데이터 사용
+let { todos } = require("./mock.js");
 
 // REST API
 // callback에 인수로 req와 res가 온다.
