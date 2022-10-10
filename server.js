@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
-const redis = require("redis");
+const { createClient } = require("redis");
 const RedisStore = require("connect-redis")(session);
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 8090;
 
 // session 설정
-const client = redis.createClient({
+const client = createClient({
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
   password: process.env.REDIS_PASSWORD,
