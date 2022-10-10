@@ -31,7 +31,7 @@ let { todos } = require("./mock.js");
 
 app.get("/", (req, res) => {
   const session = req.session;
-
+  console.log(session);
   if (session.user) res.send("로그인 했음");
   else res.send("로그인 안했음");
 });
