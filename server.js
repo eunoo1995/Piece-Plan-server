@@ -3,7 +3,6 @@ const cors = require("cors");
 const session = require("express-session");
 const redis = require("redis");
 const RedisStore = require("connect-redis")(session);
-
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 8090;
 
