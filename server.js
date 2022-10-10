@@ -1,11 +1,9 @@
 const express = require("express");
-
-// 서버 모듈
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 8090;
 
-// static 요청이 들어오면 서버의 루트 폴더를 지정하고 거기서 찾는다.
-app.use(express.static("public"));
+app.use(cors());
 app.use(express.json());
 
 let todos = { a: 1, b: 2 };
@@ -19,38 +17,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/todos", (req, res) => {
-  res.send(todos);
-});
-
-app.post("/todos", (req, res) => {
-  const newTodo = req.body;
-  todos = [newTodo, ...todos];
-  console.log(todos);
-  res.send(todos);
-});
-
-app.patch("/todos", (req, res) => {
-  const { completed } = req.body;
-  todos = todos.map((todo) => ({ ...todo, completed }));
-  res.send(todos);
-});
-
-app.patch("/todos/:id", (req, res) => {
-  const { id } = req.params;
-  const payload = req.body;
-  todos = todos.map((todo) => (todo.id === +id ? { ...todo, ...payload } : todo));
-  res.send(todos);
-});
-
-app.delete("/todos/:id", (req, res) => {
-  const { id } = req.params;
-  todos = todos.filter((todo) => todo.id !== +id);
-  res.send(todos);
-});
-
-app.delete("/todos", (req, res) => {
-  const completed = JSON.parse(req.query.completed);
-  todos = todos.filter((todo) => todo.completed !== completed);
   res.send(todos);
 });
 
