@@ -8,11 +8,13 @@ const PORT = process.env.PORT ? process.env.PORT : 8090;
 app.use(express.static("public"));
 app.use(express.json());
 
-let { todos, a } = require("./mock.js");
-
 // REST API
 // callback에 인수로 req와 res가 온다.
 // req는 클라이언트의 요청을 담고있고, res는 응답을 보낼 때 사용
+
+app.get("/", (req, res) => {
+  res.send("asdfas");
+});
 
 app.get("/todos", (req, res) => {
   res.send(todos);
